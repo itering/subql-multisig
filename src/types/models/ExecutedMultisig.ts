@@ -1,5 +1,5 @@
 // Auto-generated , DO NOT EDIT
-import {Entity} from "@subql/types";
+import {Entity, FunctionPropertyNames} from "@subql/types";
 import assert from 'assert';
 
 
@@ -59,7 +59,8 @@ export class ExecutedMultisig implements Entity {
     }
 
 
-    static create(record){
+    static create(record: Partial<Omit<ExecutedMultisig, FunctionPropertyNames<ExecutedMultisig>>> & Entity): ExecutedMultisig {
+        assert(typeof record.id === 'string', "id must be provided");
         let entity = new ExecutedMultisig(record.id);
         Object.assign(entity,record);
         return entity;

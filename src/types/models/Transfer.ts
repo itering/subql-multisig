@@ -1,5 +1,5 @@
 // Auto-generated , DO NOT EDIT
-import {Entity} from "@subql/types";
+import {Entity, FunctionPropertyNames} from "@subql/types";
 import assert from 'assert';
 
 
@@ -79,7 +79,8 @@ export class Transfer implements Entity {
     }
 
 
-    static create(record){
+    static create(record: Partial<Omit<Transfer, FunctionPropertyNames<Transfer>>> & Entity): Transfer {
+        assert(typeof record.id === 'string', "id must be provided");
         let entity = new Transfer(record.id);
         Object.assign(entity,record);
         return entity;

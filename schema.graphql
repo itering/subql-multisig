@@ -73,3 +73,22 @@ type Transfer @entity {
 
   block: Block #create relation to block
 }
+
+type MultisigAccount @entity {
+  id: ID!
+
+  confirmed: [ExecutedMultisig] @derivedFrom(field: "multisigAccount")
+}
+
+type ExecutedMultisig @entity {
+  id: ID! # blockHeight-eventIdx
+  module: String!
+
+  method: String!
+
+  multisigAccount: MultisigAccount!
+
+  timestamp: Date
+
+  block: Block!
+}

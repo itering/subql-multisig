@@ -48,6 +48,20 @@ export class Event implements Entity {
     }
 
 
+    static async getByBlockId(blockId: string): Promise<Event[] | undefined>{
+      
+      const records = await store.getByField('Event', 'blockId', blockId);
+      return records.map(record => Event.create(record));
+      
+    }
+
+    static async getByExtrinsicId(extrinsicId: string): Promise<Event[] | undefined>{
+      
+      const records = await store.getByField('Event', 'extrinsicId', extrinsicId);
+      return records.map(record => Event.create(record));
+      
+    }
+
 
     static create(record){
         let entity = new Event(record.id);

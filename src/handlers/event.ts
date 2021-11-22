@@ -3,19 +3,16 @@ import { Dispatcher } from '../helpers/dispatcher';
 import { Event } from '../types/models/Event';
 import { BlockHandler } from './block';
 import { ExtrinsicHandler } from './extrinsic';
+import { MultisigHandler } from './sub-handlers/multisig';
 import { TransferHandler } from './sub-handlers/transfer';
 
 type EventDispatch = Dispatcher<SubstrateEvent>;
 
 export class EventHandler {
   private event: SubstrateEvent;
-  private dispatcher: EventDispatch;
 
   constructor(event: SubstrateEvent) {
     this.event = event;
-    this.dispatcher = new Dispatcher();
-
-    this.dispatcher.batchRegister([]);
   }
 
   get index() {
@@ -63,59 +60,29 @@ export class EventHandler {
   public async save() {
     await BlockHandler.ensureBlock(this.blockHash);
 
+    const event = new Event(this.id);
+
+    event.index = this.index;
+    event.section = this.section;
+    event.method = this.method;
+    event.data = this.data;
+
+    event.blockId = this.blockHash;
+    event.timestamp = this.timestamp;
+
     if (this.extrinsicHash) {
       await ExtrinsicHandler.ensureExtrinsic(this.extrinsicHash);
+
+      event.extrinsicId = this.extrinsicHash;
     }
 
-    const saveEvent = async (source: {
-      id: string;
-      index: number;
-      section: string;
-      method: string;
-      data: string;
-    }): Promise<void> => {
-      const { id, index, section, method, data } = source;
-      const event = new Event(id);
+    await event.save();
 
-      event.index = index;
-      event.section = section;
-      event.method = method;
-      event.data = data;
-
-      event.blockId = this.blockHash;
-      event.timestamp = this.timestamp;
-
-      if (this.extrinsicHash) {
-        event.extrinsicId = this.extrinsicHash;
-      }
-
-      await this.dispatcher.dispatch(`${this.section}-${this.method}`, this.event);
-
-      await event.save();
-    };
-
-    // await saveEvent({ id: this.id, index: this.index, method: this.method, data: this.data, section: this.section });
-
-    const records = this.events
-      .map((item, index) => {
-        const { event } = item;
-
-        if (event.method === 'ExtrinsicSuccess') {
-          return null;
-        }
-
-        return saveEvent({
-          id: `${this.blockNumber}-${index}`,
-          section: event.section,
-          data: event.data.toString(),
-          method: event.method,
-          index,
-        });
-      })
-      .filter((item) => !!item);
-
-    await Promise.all(records);
-
-    await TransferHandler.checkTransfer(this.event);
+    if (this.method == 'Transfer') {
+      await TransferHandler.check(this.event);
+    }
+    if (this.section === 'multisig' && this.method === 'MultisigExecuted') {
+      await MultisigHandler.check(this.event);
+    }
   }
 }

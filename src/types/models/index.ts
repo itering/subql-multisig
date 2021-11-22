@@ -14,3 +14,7 @@ export {Token} from "./Token"
 
 export {Transfer} from "./Transfer"
 
+export {MultisigAccount} from "./MultisigAccount"
+
+export {ExecutedMultisig} from "./ExecutedMultisig"
+

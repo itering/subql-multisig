@@ -56,6 +56,20 @@ export class Extrinsic implements Entity {
     }
 
 
+    static async getBySignerId(signerId: string): Promise<Extrinsic[] | undefined>{
+      
+      const records = await store.getByField('Extrinsic', 'signerId', signerId);
+      return records.map(record => Extrinsic.create(record));
+      
+    }
+
+    static async getByBlockId(blockId: string): Promise<Extrinsic[] | undefined>{
+      
+      const records = await store.getByField('Extrinsic', 'blockId', blockId);
+      return records.map(record => Extrinsic.create(record));
+      
+    }
+
 
     static create(record){
         let entity = new Extrinsic(record.id);

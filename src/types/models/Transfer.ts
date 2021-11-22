@@ -50,6 +50,34 @@ export class Transfer implements Entity {
     }
 
 
+    static async getByFromId(fromId: string): Promise<Transfer[] | undefined>{
+      
+      const records = await store.getByField('Transfer', 'fromId', fromId);
+      return records.map(record => Transfer.create(record));
+      
+    }
+
+    static async getByToId(toId: string): Promise<Transfer[] | undefined>{
+      
+      const records = await store.getByField('Transfer', 'toId', toId);
+      return records.map(record => Transfer.create(record));
+      
+    }
+
+    static async getByTokenId(tokenId: string): Promise<Transfer[] | undefined>{
+      
+      const records = await store.getByField('Transfer', 'tokenId', tokenId);
+      return records.map(record => Transfer.create(record));
+      
+    }
+
+    static async getByBlockId(blockId: string): Promise<Transfer[] | undefined>{
+      
+      const records = await store.getByField('Transfer', 'blockId', blockId);
+      return records.map(record => Transfer.create(record));
+      
+    }
+
 
     static create(record){
         let entity = new Transfer(record.id);

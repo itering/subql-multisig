@@ -10,7 +10,8 @@ schema:
 
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1392130
+    # startBlock: 1392130
+    startBlock: 1
     mapping:
       file: './dist/index.js'
       handlers:
@@ -23,18 +24,22 @@ dataSources:
 
 network:
   # Polkadot
-  # genesisHash: '0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3'
-  # endpoint: wss://rpc.polkadot.io
+  genesisHash: '0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3'
+  endpoint: wss://rpc.polkadot.io
 
+  # KSM
   # endpoint: wss://kusama.api.onfinality.io/public-ws
 
+  # Darwinia
   # endpoint: wss://rpc.darwinia.network
 
+  # CRAB
   # endpoint: wss://crab-rpc.darwinia.network
 
-  # genesisHash: '0xe4c7d754ef479eaa1f7d3cad9905353211339f1daa5cddee5c289540a7754f86' # pangolin
-  genesisHash: '0xf9d24fa9ec4ccb07c966e2feee7b0cfd82c23065b0b556098c6c27b3c66d04f1' # pangolin
-  endpoint: wss://pangolin-rpc.darwinia.network/
+  # pangolin
+  # genesisHash: '0xe4c7d754ef479eaa1f7d3cad9905353211339f1daa5cddee5c289540a7754f86'
+  # genesisHash: '0xf9d24fa9ec4ccb07c966e2feee7b0cfd82c23065b0b556098c6c27b3c66d04f1'
+  # endpoint: wss://pangolin-rpc.darwinia.network/
 
-  chaintypes:
-    file: './pangolin_types.yaml'
+  # chaintypes:
+  #   file: './pangolin_types.yaml'

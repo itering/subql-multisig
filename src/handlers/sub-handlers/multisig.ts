@@ -11,7 +11,8 @@ export class MultisigHandler {
   }
 
   static async check(event: SubstrateEvent) {
-    const entity = new ExecutedMultisig(`${event.block.block.header.number}-${event.idx}`);
+    const blockHeight = event.block.block.header.number;
+    const entity = new ExecutedMultisig(`${blockHeight}-${event.idx}`);
     const {
       event: { data },
     } = event;
@@ -19,6 +20,7 @@ export class MultisigHandler {
     entity.method = event.event.method;
     entity.blockId = event.block.block.header.hash.toString();
     entity.timestamp = event.block.timestamp;
+    entity.extrinsicIdx = `${blockHeight}-${event.extrinsic?.idx}`;
 
     const multisigAccountId = data[2].toString();
     await this.ensureMultisigAccount(multisigAccountId);

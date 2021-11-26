@@ -12,6 +12,8 @@ export class ExecutedMultisig implements Entity {
 
     public id: string;
 
+    public extrinsicIdx: string;
+
     public module: string;
 
     public method: string;

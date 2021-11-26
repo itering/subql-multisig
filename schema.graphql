@@ -82,6 +82,7 @@ type MultisigAccount @entity {
 
 type ExecutedMultisig @entity {
   id: ID! # blockHeight-eventIdx
+  extrinsicIdx: String! # blockHeight-extrinsicIdx
   module: String!
 
   method: String!

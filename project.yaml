@@ -10,12 +10,12 @@ schema:
 
 dataSources:
   - kind: substrate/Runtime
-    # startBlock: 1
+    startBlock: 1
     # startBlock: 7950000 # Polkadot
     # startBlock: 10340000 # Kusama
     # startBlock: 6141000 # Darwinia
     # startBlock: 8116000 # Crab
-    startBlock: 154000 # Pangolin
+    # startBlock: 154000 # Pangolin
     mapping:
       file: './dist/index.js'
       handlers:

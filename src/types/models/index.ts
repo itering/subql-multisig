@@ -6,14 +6,6 @@ export {Block} from "./Block"
 
 export {Extrinsic} from "./Extrinsic"
 
-export {Event} from "./Event"
-
-export {Account} from "./Account"
-
-export {Token} from "./Token"
-
-export {Transfer} from "./Transfer"
-
 export {MultisigAccount} from "./MultisigAccount"
 
 export {ExecutedMultisig} from "./ExecutedMultisig"

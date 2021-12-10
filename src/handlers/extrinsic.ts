@@ -2,7 +2,6 @@ import { SubstrateExtrinsic } from '@subql/types';
 import { checkIfExtrinsicExecuteSuccess, getBatchInterruptedIndex } from '../helpers';
 import { Extrinsic } from '../types/models/Extrinsic';
 import { BlockHandler } from './block';
-import { AccountHandler } from './sub-handlers/account';
 
 export class ExtrinsicHandler {
   private extrinsic: SubstrateExtrinsic;
@@ -83,7 +82,6 @@ export class ExtrinsicHandler {
     const record = new Extrinsic(this.id);
 
     await BlockHandler.ensureBlock(this.blockHash);
-    await AccountHandler.ensureAccount(this.signer);
 
     record.method = this.method;
     record.section = this.section;

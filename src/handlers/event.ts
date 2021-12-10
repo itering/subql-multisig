@@ -1,10 +1,8 @@
 import { SubstrateEvent } from '@subql/types';
 import { Dispatcher } from '../helpers/dispatcher';
-import { Event } from '../types/models/Event';
 import { BlockHandler } from './block';
 import { ExtrinsicHandler } from './extrinsic';
 import { MultisigHandler } from './sub-handlers/multisig';
-import { TransferHandler } from './sub-handlers/transfer';
 
 type EventDispatch = Dispatcher<SubstrateEvent>;
 
@@ -60,27 +58,10 @@ export class EventHandler {
   public async save() {
     await BlockHandler.ensureBlock(this.blockHash);
 
-    const event = new Event(this.id);
-
-    event.index = this.index;
-    event.section = this.section;
-    event.method = this.method;
-    event.data = this.data;
-
-    event.blockId = this.blockHash;
-    event.timestamp = this.timestamp;
-
     if (this.extrinsicHash) {
       await ExtrinsicHandler.ensureExtrinsic(this.extrinsicHash);
-
-      event.extrinsicId = this.extrinsicHash;
     }
 
-    await event.save();
-
-    if (this.method == 'Transfer') {
-      await TransferHandler.check(this.event);
-    }
     if (this.section === 'multisig' && this.method === 'MultisigExecuted') {
       await MultisigHandler.check(this.event);
     }

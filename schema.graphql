@@ -7,8 +7,6 @@ type Block @entity {
   specVersion: Int
 
   extrinsics: [Extrinsic] @derivedFrom(field: "block")
-  events: [Event] @derivedFrom(field: "block")
-  transfers: [Transfer] @derivedFrom(field: "block")
 }
 
 type Extrinsic @entity {
@@ -17,59 +15,13 @@ type Extrinsic @entity {
   method: String
   section: String
   args: String
-  signer: Account #create relation to account
+  signerId: String
   nonce: BigInt
   timestamp: Date
   signature: String
   tip: BigInt
   isSigned: Boolean
   isSuccess: Boolean
-
-  block: Block #create relation to block
-  events: [Event] @derivedFrom(field: "extrinsic")
-}
-
-type Event @entity {
-  id: ID!
-
-  index: Int!
-  section: String!
-  method: String!
-  data: String!
-  timestamp: Date
-
-  block: Block #create relation to block
-  extrinsic: Extrinsic #create relation to extrinsic
-}
-
-type Account @entity {
-  id: ID!
-
-  transferTotalCount: Int
-
-  extrinsics: [Extrinsic] @derivedFrom(field: "signer")
-  transferIn: [Transfer] @derivedFrom(field: "to")
-  transferOut: [Transfer] @derivedFrom(field: "from")
-}
-
-type Token @entity {
-  id: ID!
-
-  decimal: Int
-  name: String
-}
-
-type Transfer @entity {
-  id: ID!
-
-  from: Account
-  to: Account
-  token: Token
-  amount: BigInt
-  timestamp: Date
-  fee: BigInt
-  blockNumber: BigInt
-  # TODO add index field
 
   block: Block #create relation to block
 }

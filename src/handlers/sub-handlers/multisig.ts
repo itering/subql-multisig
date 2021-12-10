@@ -1,4 +1,5 @@
 import { SubstrateEvent } from '@subql/types';
+import { BlockHandler } from '..';
 import { ExecutedMultisig, MultisigAccount } from '../../types';
 
 export class MultisigHandler {
@@ -11,6 +12,8 @@ export class MultisigHandler {
   }
 
   static async check(event: SubstrateEvent) {
+    await BlockHandler.ensureBlock(event.block.block.header.hash.toString());
+
     const blockHeight = event.block.block.header.number;
     const entity = new ExecutedMultisig(`${blockHeight}-${event.idx}`);
     const {

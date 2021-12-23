@@ -56,11 +56,14 @@ export class EventHandler {
   }
 
   public async save() {
-    await BlockHandler.ensureBlock(this.blockHash);
+    // await BlockHandler.ensureBlock(this.blockHash);
 
-    if (this.extrinsicHash) {
-      await ExtrinsicHandler.ensureExtrinsic(this.extrinsicHash);
-    }
+    // if (this.extrinsicHash) {
+    //   await ExtrinsicHandler.ensureExtrinsic(this.extrinsicHash);
+    // }
+
+    const handler = new ExtrinsicHandler(this.event.extrinsic);
+    await handler.save();
 
     if (this.section === 'multisig' && this.method === 'MultisigExecuted') {
       await MultisigHandler.check(this.event);

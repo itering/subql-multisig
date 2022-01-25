@@ -46,9 +46,9 @@ network:
   # dictionary: https://api.subquery.network/sq/subquery/dictionary-polkadot
 
   # KSM
-  genesisHash: '0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe'
-  endpoint: wss://kusama.api.onfinality.io/public-ws
-  dictionary: https://api.subquery.network/sq/subquery/dictionary-kusama
+  # genesisHash: '0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe'
+  # endpoint: wss://kusama.api.onfinality.io/public-ws
+  # dictionary: https://api.subquery.network/sq/subquery/dictionary-kusama
 
   # Darwinia
   # genesisHash: '0x729cb8f2cf428adcf81fe69610edda32c5711b2ff17de747e8604a3587021db8'
@@ -59,11 +59,11 @@ network:
   # endpoint: wss://crab-rpc.darwinia.network
 
   # pangolin
-  # genesisHash: '0xce44bd16fc276f9e457b452577b6c2678e57768260012af127479fed806da7e7'
-  # endpoint: wss://pangolin-rpc.darwinia.network/
-  # dictionary: https://api.subquery.network/sq/vzxh/multisig-dictionary__dnp4a
+  genesisHash: '0xce44bd16fc276f9e457b452577b6c2678e57768260012af127479fed806da7e7'
+  endpoint: wss://pangolin-rpc.darwinia.network/
+  dictionary: https://api.subquery.network/sq/vzxh/multisig-dictionary__dnp4a
 
   chaintypes:
-    # file: './types_pangolin.yaml'
+    file: './types_pangolin.yaml'
     # file: './types_darwinia.yaml'
     # file: './types_crab.yaml'

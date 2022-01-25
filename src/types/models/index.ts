@@ -8,5 +8,9 @@ export {Extrinsic} from "./Extrinsic"
 
 export {MultisigAccount} from "./MultisigAccount"
 
+export {MultisigRecord} from "./MultisigRecord"
+
+export {ApproveRecord} from "./ApproveRecord"
+
 export {ExecutedMultisig} from "./ExecutedMultisig"
 

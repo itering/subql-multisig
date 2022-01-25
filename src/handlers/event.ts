@@ -65,8 +65,14 @@ export class EventHandler {
     const handler = new ExtrinsicHandler(this.event.extrinsic);
     await handler.save();
 
+    if (this.section === 'multisig' && this.method === 'NewMultisig') {
+      await MultisigHandler.checkNew(this.event);
+    }
+    if (this.section === 'multisig' && this.method === 'MultisigApproval') {
+      await MultisigHandler.checkApprove(this.event);
+    }
     if (this.section === 'multisig' && this.method === 'MultisigExecuted') {
-      await MultisigHandler.check(this.event);
+      await MultisigHandler.checkExecuted(this.event);
     }
   }
 }

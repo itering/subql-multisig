@@ -32,6 +32,17 @@ type MultisigAccount @entity {
   confirmed: [ExecutedMultisig] @derivedFrom(field: "multisigAccount")
 }
 
+type MultisigRecord @entity {
+  id: ID! # blockHeight-extrinsicIdx
+  approveRecords: [ApproveRecord] @derivedFrom(field: "multisigRecord")
+}
+
+type ApproveRecord @entity {
+  id: ID! # accountId-blockHeight-extrinsicIdx
+  account: String! # approve account address
+  multisigRecord: MultisigRecord!
+}
+
 type ExecutedMultisig @entity {
   id: ID! # blockHeight-eventIdx
   extrinsicIdx: String! # blockHeight-extrinsicIdx
@@ -44,4 +55,6 @@ type ExecutedMultisig @entity {
   timestamp: Date
 
   block: Block!
+
+  approvals: [String!]
 }

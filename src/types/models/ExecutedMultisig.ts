@@ -24,6 +24,8 @@ export class ExecutedMultisig implements Entity {
 
     public blockId: string;
 
+    public approvals?: string[];
+
 
     async save(): Promise<void>{
         let id = this.id;

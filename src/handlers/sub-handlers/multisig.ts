@@ -28,7 +28,7 @@ export class MultisigHandler {
 
   static async checkNew(event: SubstrateEvent) {
     await BlockHandler.ensureBlock(event.block.block.header.hash.toString());
-
+    // Save new multisig record.
     const blockHeight = event.block.block.header.number;
     const extrinsicIdx = `${blockHeight}-${event.extrinsic.idx}`;
     await this.ensureMultisigRecord(extrinsicIdx);
@@ -71,6 +71,7 @@ export class MultisigHandler {
     const accountId = data[0].toString();
     await this.saveApproveRecord(accountId, timepointExtrinsicIdx);
 
+    // Save confirmed multisig record.
     const blockHeight = event.block.block.header.number;
     const entity = new ExecutedMultisig(`${blockHeight}-${event.idx}`);
 

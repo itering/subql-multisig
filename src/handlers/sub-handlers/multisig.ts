@@ -106,25 +106,6 @@ export class MultisigHandler {
     const approveRecords = await ApproveRecord.getByMultisigRecordId(multisigRecordId);
     multisigRecord.approvals = approveRecords.map((approveRecord) => approveRecord.account);
     await multisigRecord.save();
-
-    // // Save confirmed multisig record.
-    // const entity = new ExecutedMultisig(`${blockHeight}-${event.idx}`);
-
-    // entity.module = event.event.section;
-    // entity.method = event.event.method;
-    // entity.blockId = event.block.block.header.hash.toString();
-    // entity.timestamp = event.block.timestamp;
-    // entity.extrinsicIdx = `${blockHeight}-${event.extrinsic?.idx}`;
-
-    // await this.ensureMultisigAccount(multisigAccountId);
-    // entity.multisigAccountId = multisigAccountId;
-
-    // // Get approvals for this multisig action.
-    // const approveRecords = await ApproveRecord.getByMultisigRecordId(timepointExtrinsicIdx);
-    // const approvals = approveRecords.map((approveRecord) => approveRecord.account);
-    // entity.approvals = approvals;
-
-    // await entity.save();
   }
 
   static async checkCancelled(event: SubstrateEvent) {
@@ -150,24 +131,5 @@ export class MultisigHandler {
     multisigRecord.status = 'cancelled';
     multisigRecord.cancelExtrinsicIdx = `${blockHeight}-${event.extrinsic?.idx}`;
     await multisigRecord.save();
-
-    // Save cancelled multisig record.
-    // const entity = new CancelledMultisig(`${blockHeight}-${event.idx}`);
-
-    // entity.module = event.event.section;
-    // entity.method = event.event.method;
-    // entity.blockId = event.block.block.header.hash.toString();
-    // entity.timestamp = event.block.timestamp;
-    // entity.extrinsicIdx = `${blockHeight}-${event.extrinsic?.idx}`;
-
-    // await this.ensureMultisigAccount(multisigAccountId);
-    // entity.multisigAccountId = multisigAccountId;
-
-    // // Get approvals for this multisig action.
-    // const approveRecords = await ApproveRecord.getByMultisigRecordId(timepointExtrinsicIdx);
-    // const approvals = approveRecords.map((approveRecord) => approveRecord.account);
-    // entity.approvals = approvals;
-
-    // await entity.save();
   }
 }

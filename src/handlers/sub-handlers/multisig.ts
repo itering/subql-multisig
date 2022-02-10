@@ -1,6 +1,12 @@
 import { SubstrateEvent } from '@subql/types';
 import { BlockHandler } from '..';
-import { ApproveRecord, ExecutedMultisig, MultisigAccount, MultisigRecord } from '../../types';
+import {
+  ApproveRecord,
+  CancelledMultisig,
+  ExecutedMultisig,
+  MultisigAccount,
+  MultisigRecord,
+} from '../../types';
 
 export class MultisigHandler {
   static async ensureMultisigAccount(accountId: string) {
@@ -74,6 +80,39 @@ export class MultisigHandler {
     // Save confirmed multisig record.
     const blockHeight = event.block.block.header.number;
     const entity = new ExecutedMultisig(`${blockHeight}-${event.idx}`);
+
+    entity.module = event.event.section;
+    entity.method = event.event.method;
+    entity.blockId = event.block.block.header.hash.toString();
+    entity.timestamp = event.block.timestamp;
+    entity.extrinsicIdx = `${blockHeight}-${event.extrinsic?.idx}`;
+
+    const multisigAccountId = data[2].toString();
+    await this.ensureMultisigAccount(multisigAccountId);
+    entity.multisigAccountId = multisigAccountId;
+
+    // Get approvals for this multisig action.
+    const approveRecords = await ApproveRecord.getByMultisigRecordId(timepointExtrinsicIdx);
+    const approvals = approveRecords.map((approveRecord) => approveRecord.account);
+    entity.approvals = approvals;
+
+    await entity.save();
+  }
+
+  static async checkCancelled(event: SubstrateEvent) {
+    await BlockHandler.ensureBlock(event.block.block.header.hash.toString());
+
+    const {
+      event: { data },
+    } = event;
+
+    // Get multisig timepoint.
+    const timepoint = data[1].toJSON() as any;
+    const timepointExtrinsicIdx = `${timepoint.height}-${timepoint.index}`;
+
+    // Save cancelled multisig record.
+    const blockHeight = event.block.block.header.number;
+    const entity = new CancelledMultisig(`${blockHeight}-${event.idx}`);
 
     entity.module = event.event.section;
     entity.method = event.event.method;

@@ -74,5 +74,8 @@ export class EventHandler {
     if (this.section === 'multisig' && this.method === 'MultisigExecuted') {
       await MultisigHandler.checkExecuted(this.event);
     }
+    if (this.section === 'multisig' && this.method === 'MultisigCancelled') {
+      await MultisigHandler.checkCancelled(this.event);
+    }
   }
 }

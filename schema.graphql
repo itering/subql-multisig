@@ -58,3 +58,19 @@ type ExecutedMultisig @entity {
 
   approvals: [String!]
 }
+
+type CancelledMultisig @entity {
+  id: ID! # blockHeight-eventIdx
+  extrinsicIdx: String! # blockHeight-extrinsicIdx
+  module: String!
+
+  method: String!
+
+  multisigAccount: MultisigAccount!
+
+  timestamp: Date
+
+  block: Block!
+
+  approvals: [String!]
+}

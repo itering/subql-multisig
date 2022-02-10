@@ -49,7 +49,6 @@ type MultisigRecord @entity {
   confirmExtrinsicIdx: String
   cancelExtrinsicIdx: String
   approvals: [String!]
-  approveRecords: [ApproveRecord] @derivedFrom(field: "multisigRecord")
 }
 
 type ApproveRecord @entity {

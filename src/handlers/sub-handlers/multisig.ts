@@ -1,12 +1,6 @@
 import { SubstrateEvent } from '@subql/types';
 import { BlockHandler } from '..';
-import {
-  ApproveRecord,
-  CancelledMultisig,
-  ExecutedMultisig,
-  MultisigAccount,
-  MultisigRecord,
-} from '../../types';
+import { ApproveRecord, MultisigAccount, MultisigRecord } from '../../types';
 
 export class MultisigHandler {
   static async ensureMultisigAccount(accountId: string) {

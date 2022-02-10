@@ -12,7 +12,3 @@ export {MultisigRecord} from "./MultisigRecord"
 
 export {ApproveRecord} from "./ApproveRecord"
 
-export {ExecutedMultisig} from "./ExecutedMultisig"
-
-export {CancelledMultisig} from "./CancelledMultisig"
-

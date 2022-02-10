@@ -29,48 +29,30 @@ type Extrinsic @entity {
 type MultisigAccount @entity {
   id: ID!
 
-  confirmed: [ExecutedMultisig] @derivedFrom(field: "multisigAccount")
+  # confirmed: [ExecutedMultisig] @derivedFrom(field: "multisigAccount")
 }
 
 type MultisigRecord @entity {
-  id: ID! # blockHeight-extrinsicIdx
-  approveRecords: [ApproveRecord] @derivedFrom(field: "multisigRecord")
+  id: ID! # multisigAccount-blockHeight-extrinsicIdx
+  createExtrinsicIdx: String! # blockHeight-extrinsicIdx
+  module: String!
+
+  method: String!
+
+  multisigAccount: MultisigAccount!
+
+  timestamp: Date
+
+  block: Block!
+
+  status: String! # default/cancelled/confirmed
+  confirmExtrinsicIdx: String
+  cancelExtrinsicIdx: String
+  approvals: [String!]
 }
 
 type ApproveRecord @entity {
   id: ID! # accountId-blockHeight-extrinsicIdx
   account: String! # approve account address
   multisigRecord: MultisigRecord!
-}
-
-type ExecutedMultisig @entity {
-  id: ID! # blockHeight-eventIdx
-  extrinsicIdx: String! # blockHeight-extrinsicIdx
-  module: String!
-
-  method: String!
-
-  multisigAccount: MultisigAccount!
-
-  timestamp: Date
-
-  block: Block!
-
-  approvals: [String!]
-}
-
-type CancelledMultisig @entity {
-  id: ID! # blockHeight-eventIdx
-  extrinsicIdx: String! # blockHeight-extrinsicIdx
-  module: String!
-
-  method: String!
-
-  multisigAccount: MultisigAccount!
-
-  timestamp: Date
-
-  block: Block!
-
-  approvals: [String!]
 }

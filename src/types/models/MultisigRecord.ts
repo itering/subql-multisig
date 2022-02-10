@@ -14,6 +14,26 @@ export class MultisigRecord implements Entity {
 
     public id: string;
 
+    public createExtrinsicIdx: string;
+
+    public module: string;
+
+    public method: string;
+
+    public multisigAccountId: string;
+
+    public timestamp?: Date;
+
+    public blockId: string;
+
+    public status: string;
+
+    public confirmExtrinsicIdx?: string;
+
+    public cancelExtrinsicIdx?: string;
+
+    public approvals?: string[];
+
 
     async save(): Promise<void>{
         let id = this.id;
@@ -35,6 +55,20 @@ export class MultisigRecord implements Entity {
         }
     }
 
+
+    static async getByMultisigAccountId(multisigAccountId: string): Promise<MultisigRecord[] | undefined>{
+      
+      const records = await store.getByField('MultisigRecord', 'multisigAccountId', multisigAccountId);
+      return records.map(record => MultisigRecord.create(record));
+      
+    }
+
+    static async getByBlockId(blockId: string): Promise<MultisigRecord[] | undefined>{
+      
+      const records = await store.getByField('MultisigRecord', 'blockId', blockId);
+      return records.map(record => MultisigRecord.create(record));
+      
+    }
 
 
     static create(record: Partial<Omit<MultisigRecord, FunctionPropertyNames<MultisigRecord>>> & Entity): MultisigRecord {

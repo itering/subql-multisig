@@ -45,6 +45,8 @@ type MultisigRecord @entity {
 
   block: Block!
 
+  confirmBlock: Block
+
   status: String! # default/cancelled/confirmed
   confirmExtrinsicIdx: String
   cancelExtrinsicIdx: String

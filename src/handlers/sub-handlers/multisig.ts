@@ -59,16 +59,16 @@ export class MultisigHandler {
     } = event;
 
     // Save approve record.
+    const accountId = data[0].toString();
     const timepoint = data[1].toJSON() as any;
+    const multisigAccountId = data[2].toString();
     const extrinsicIdx = `${timepoint.height}-${timepoint.index}`;
 
-    let multisigRecord = await MultisigRecord.get(extrinsicIdx);
+    let multisigRecord = await MultisigRecord.get(`${multisigAccountId}-${timepoint}`);
     if (!multisigRecord) {
       return;
     }
 
-    const accountId = data[0].toString();
-    const multisigAccountId = data[1].toString();
     await this.saveApproveRecord(accountId, multisigAccountId, extrinsicIdx);
 
     const approveRecords = await ApproveRecord.getByMultisigRecordId(
@@ -85,8 +85,8 @@ export class MultisigHandler {
       event: { data },
     } = event;
 
-    const timepoint = data[1].toJSON() as any;
     const accountId = data[0].toString();
+    const timepoint = data[1].toJSON() as any;
     const multisigAccountId = data[2].toString();
     const timepointExtrinsicIdx = `${timepoint.height}-${timepoint.index}`;
     const multisigRecordId = `${multisigAccountId}-${timepointExtrinsicIdx}`;

@@ -26,6 +26,8 @@ export class MultisigRecord implements Entity {
 
     public blockId: string;
 
+    public confirmBlockId?: string;
+
     public status: string;
 
     public confirmExtrinsicIdx?: string;
@@ -66,6 +68,13 @@ export class MultisigRecord implements Entity {
     static async getByBlockId(blockId: string): Promise<MultisigRecord[] | undefined>{
       
       const records = await store.getByField('MultisigRecord', 'blockId', blockId);
+      return records.map(record => MultisigRecord.create(record));
+      
+    }
+
+    static async getByConfirmBlockId(confirmBlockId: string): Promise<MultisigRecord[] | undefined>{
+      
+      const records = await store.getByField('MultisigRecord', 'confirmBlockId', confirmBlockId);
       return records.map(record => MultisigRecord.create(record));
       
     }

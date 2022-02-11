@@ -1,3 +1,3 @@
 import { typesBundleForPolkadotApps } from '@darwinia/types/mix';
 
-export default { typesBundle: typesBundleForPolkadotApps.spec.Darwinia };
+export default { typesBundle: typesBundleForPolkadotApps.spec.Pangolin };

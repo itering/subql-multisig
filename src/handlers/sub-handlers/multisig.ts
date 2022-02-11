@@ -79,7 +79,8 @@ export class MultisigHandler {
   }
 
   static async checkExecuted(event: SubstrateEvent) {
-    await BlockHandler.ensureBlock(event.block.block.header.hash.toString());
+    const currentBlockId = event.block.block.header.hash.toString();
+    await BlockHandler.ensureBlock(currentBlockId);
 
     const {
       event: { data },
@@ -102,6 +103,7 @@ export class MultisigHandler {
     // Update multisig record.
     const blockHeight = event.block.block.header.number;
     multisigRecord.status = 'confirmed';
+    multisigRecord.confirmBlockId = currentBlockId;
     multisigRecord.confirmExtrinsicIdx = `${blockHeight}-${event.extrinsic?.idx}`;
     const approveRecords = await ApproveRecord.getByMultisigRecordId(multisigRecordId);
     multisigRecord.approvals = approveRecords.map((approveRecord) => approveRecord.account);

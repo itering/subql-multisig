@@ -64,7 +64,7 @@ export class MultisigHandler {
     const multisigAccountId = data[2].toString();
     const extrinsicIdx = `${timepoint.height}-${timepoint.index}`;
 
-    let multisigRecord = await MultisigRecord.get(`${multisigAccountId}-${timepoint}`);
+    let multisigRecord = await MultisigRecord.get(`${multisigAccountId}-${extrinsicIdx}`);
     if (!multisigRecord) {
       return;
     }

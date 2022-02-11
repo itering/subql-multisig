@@ -10,8 +10,8 @@ schema:
 
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1
-    # startBlock: 8719668 # Polkadot
+    # startBlock: 1
+    startBlock: 8719668 # Polkadot
     # startBlock: 10340000 # Kusama
     # startBlock: 6345000 # Darwinia
     # startBlock: 8305000 # Crab

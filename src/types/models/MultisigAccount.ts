@@ -14,6 +14,10 @@ export class MultisigAccount implements Entity {
 
     public id: string;
 
+    public threshold: number;
+
+    public members: string[];
+
 
     async save(): Promise<void>{
         let id = this.id;

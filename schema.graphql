@@ -29,6 +29,10 @@ type Extrinsic @entity {
 type MultisigAccount @entity {
   id: ID!
 
+  threshold: Int!
+
+  members: [String!]!
+
   # confirmed: [ExecutedMultisig] @derivedFrom(field: "multisigAccount")
 }
 

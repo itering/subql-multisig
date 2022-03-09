@@ -1,12 +1,32 @@
 import { SubstrateEvent } from '@subql/types';
-import { BlockHandler } from '..';
-import { ApproveRecord, MultisigAccount, MultisigRecord } from '../../types';
+import { BlockHandler, ExtrinsicHandler } from '..';
+import { ApproveRecord, Extrinsic, MultisigAccount, MultisigRecord } from '../../types';
 
 export class MultisigHandler {
-  static async ensureMultisigAccount(accountId: string) {
-    let entity = await MultisigAccount.get(accountId);
+  static async ensureMultisigAccount(
+    multisigAccountId: string,
+    sender: string,
+    extrinsicArgs: string
+  ) {
+    let entity = await MultisigAccount.get(multisigAccountId);
     if (entity === undefined) {
-      entity = new MultisigAccount(accountId);
+      entity = new MultisigAccount(multisigAccountId);
+      const jsonExtrinsicArgs = JSON.parse(extrinsicArgs) as any[];
+      let threshold = 0;
+      let members = [];
+
+      jsonExtrinsicArgs.forEach((arg) => {
+        if (arg.name === 'threshold') {
+          threshold = Number(arg.value);
+        }
+        if (arg.name === 'otherSignatories' || arg.name === 'other_signatories') {
+          members = [sender, ...arg.value];
+        }
+      });
+
+      entity.threshold = threshold;
+      entity.members = members;
+
       await entity.save();
     }
   }
@@ -33,7 +53,9 @@ export class MultisigHandler {
     const accountId = data[0].toString();
     const multisigAccountId = data[1].toString();
 
-    await this.ensureMultisigAccount(multisigAccountId);
+    const extrinsicRecord = await Extrinsic.get(event.extrinsic?.extrinsic?.hash?.toString());
+
+    await this.ensureMultisigAccount(multisigAccountId, accountId, extrinsicRecord.args);
 
     // Save new multisig record.
     const entity = new MultisigRecord(`${multisigAccountId}-${extrinsicIdx}`);

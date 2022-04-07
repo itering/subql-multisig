@@ -34,11 +34,13 @@ export class MultisigHandler {
   static async saveApproveRecord(
     accountId: string,
     multisigAccountId: string,
-    maybeTimepoint: string
+    maybeTimepoint: string,
+    approveTimepoint: string
   ) {
     const entity = new ApproveRecord(`${accountId}-${maybeTimepoint}`);
     entity.account = accountId;
     entity.multisigRecordId = `${multisigAccountId}-${maybeTimepoint}`;
+    entity.approveTimepoint = approveTimepoint;
     await entity.save();
   }
 
@@ -66,11 +68,10 @@ export class MultisigHandler {
     entity.timestamp = event.block.timestamp;
     entity.blockId = event.block.block.header.hash.toString();
     entity.status = 'default';
-    entity.approvals = [accountId];
     await entity.save();
 
     // Save approve record.
-    await this.saveApproveRecord(accountId, multisigAccountId, extrinsicIdx);
+    await this.saveApproveRecord(accountId, multisigAccountId, extrinsicIdx, extrinsicIdx);
   }
 
   static async checkApprove(event: SubstrateEvent) {
@@ -86,17 +87,15 @@ export class MultisigHandler {
     const multisigAccountId = data[2].toString();
     const extrinsicIdx = `${timepoint.height}-${timepoint.index}`;
 
+    const currentExtrinsicIdx = `${event.block.block.header.number}-${event.extrinsic.idx}`;
+
     let multisigRecord = await MultisigRecord.get(`${multisigAccountId}-${extrinsicIdx}`);
     if (!multisigRecord) {
       return;
     }
 
-    await this.saveApproveRecord(accountId, multisigAccountId, extrinsicIdx);
+    await this.saveApproveRecord(accountId, multisigAccountId, extrinsicIdx, currentExtrinsicIdx);
 
-    const approveRecords = await ApproveRecord.getByMultisigRecordId(
-      `${multisigAccountId}-${extrinsicIdx}`
-    );
-    multisigRecord.approvals = approveRecords.map((approveRecord) => approveRecord.account);
     await multisigRecord.save();
   }
 
@@ -114,21 +113,26 @@ export class MultisigHandler {
     const timepointExtrinsicIdx = `${timepoint.height}-${timepoint.index}`;
     const multisigRecordId = `${multisigAccountId}-${timepointExtrinsicIdx}`;
 
+    const currentExtrinsicIdx = `${event.block.block.header.number}-${event.extrinsic.idx}`;
+
     let multisigRecord = await MultisigRecord.get(`${multisigAccountId}-${timepointExtrinsicIdx}`);
     if (!multisigRecord) {
       return;
     }
 
     // Save approve record.
-    await this.saveApproveRecord(accountId, multisigAccountId, timepointExtrinsicIdx);
+    await this.saveApproveRecord(
+      accountId,
+      multisigAccountId,
+      timepointExtrinsicIdx,
+      currentExtrinsicIdx
+    );
 
     // Update multisig record.
     const blockHeight = event.block.block.header.number;
     multisigRecord.status = 'confirmed';
     multisigRecord.confirmBlockId = currentBlockId;
     multisigRecord.confirmExtrinsicIdx = `${blockHeight}-${event.extrinsic?.idx}`;
-    const approveRecords = await ApproveRecord.getByMultisigRecordId(multisigRecordId);
-    multisigRecord.approvals = approveRecords.map((approveRecord) => approveRecord.account);
     await multisigRecord.save();
   }
 

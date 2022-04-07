@@ -34,8 +34,6 @@ export class MultisigRecord implements Entity {
 
     public cancelExtrinsicIdx?: string;
 
-    public approvals?: string[];
-
 
     async save(): Promise<void>{
         let id = this.id;

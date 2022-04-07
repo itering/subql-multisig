@@ -54,11 +54,12 @@ type MultisigRecord @entity {
   status: String! # default/cancelled/confirmed
   confirmExtrinsicIdx: String
   cancelExtrinsicIdx: String
-  approvals: [String!]
+  approveRecords: [ApproveRecord] @derivedFrom(field: "multisigRecord")
 }
 
 type ApproveRecord @entity {
   id: ID! # accountId-blockHeight-extrinsicIdx
+  approveTimepoint: String! # blockHeight-extrinsicIdx
   account: String! # approve account address
   multisigRecord: MultisigRecord!
 }

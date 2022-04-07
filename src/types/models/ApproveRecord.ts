@@ -14,6 +14,8 @@ export class ApproveRecord implements Entity {
 
     public id: string;
 
+    public approveTimepoint: string;
+
     public account: string;
 
     public multisigRecordId: string;

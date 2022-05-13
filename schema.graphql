@@ -59,7 +59,9 @@ type MultisigRecord @entity {
 
 type ApproveRecord @entity {
   id: ID! # accountId-blockHeight-extrinsicIdx
-  approveTimepoint: String! # blockHeight-extrinsicIdx
-  account: String! # approve account address
   multisigRecord: MultisigRecord!
+  account: String! # approve account address
+  approveTimepoint: String! # blockHeight-extrinsicIdx
+  approveTimestamp: String!
+  approveType: String!
 }

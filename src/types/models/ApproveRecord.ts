@@ -14,11 +14,15 @@ export class ApproveRecord implements Entity {
 
     public id: string;
 
-    public approveTimepoint: string;
+    public multisigRecordId: string;
 
     public account: string;
 
-    public multisigRecordId: string;
+    public approveTimepoint: string;
+
+    public approveTimestamp: string;
+
+    public approveType: string;
 
 
     async save(): Promise<void>{

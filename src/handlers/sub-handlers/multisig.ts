@@ -35,12 +35,16 @@ export class MultisigHandler {
     accountId: string,
     multisigAccountId: string,
     maybeTimepoint: string,
-    approveTimepoint: string
+    approveTimepoint: string,
+    approveTimestamp: string,
+    approveType: string
   ) {
     const entity = new ApproveRecord(`${accountId}-${maybeTimepoint}`);
     entity.account = accountId;
     entity.multisigRecordId = `${multisigAccountId}-${maybeTimepoint}`;
     entity.approveTimepoint = approveTimepoint;
+    entity.approveTimestamp = approveTimestamp;
+    entity.approveType = approveType;
     await entity.save();
   }
 
@@ -71,7 +75,14 @@ export class MultisigHandler {
     await entity.save();
 
     // Save approve record.
-    await this.saveApproveRecord(accountId, multisigAccountId, extrinsicIdx, extrinsicIdx);
+    await this.saveApproveRecord(
+      accountId,
+      multisigAccountId,
+      extrinsicIdx,
+      extrinsicIdx,
+      event.block.timestamp.valueOf().toString(),
+      'initialize'
+    );
   }
 
   static async checkApprove(event: SubstrateEvent) {
@@ -94,7 +105,14 @@ export class MultisigHandler {
       return;
     }
 
-    await this.saveApproveRecord(accountId, multisigAccountId, extrinsicIdx, currentExtrinsicIdx);
+    await this.saveApproveRecord(
+      accountId,
+      multisigAccountId,
+      extrinsicIdx,
+      currentExtrinsicIdx,
+      event.block.timestamp.valueOf().toString(),
+      'approve'
+    );
 
     await multisigRecord.save();
   }
@@ -125,7 +143,9 @@ export class MultisigHandler {
       accountId,
       multisigAccountId,
       timepointExtrinsicIdx,
-      currentExtrinsicIdx
+      currentExtrinsicIdx,
+      event.block.timestamp.valueOf().toString(),
+      'execute'
     );
 
     // Update multisig record.

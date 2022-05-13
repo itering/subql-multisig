@@ -72,6 +72,6 @@ network:
 
   chaintypes:
     # file: './types_pangolin.yaml'
-    file: './types_darwinia.yaml'
-    # file: './types_crab.yaml'
+    # file: './types_darwinia.yaml'
+    file: './types_crab.yaml'
     # file: ./dist/chaintypes.js

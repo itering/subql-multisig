@@ -10,11 +10,11 @@ schema:
 
 dataSources:
   - kind: substrate/Runtime
-    # startBlock: 1
+    startBlock: 1
     # startBlock: 2036961 # Polkadot
     # startBlock: 10340000 # Kusama
     # startBlock: 6345000 # Darwinia
-    startBlock: 8305000 # Crab
+    # startBlock: 8305000 # Crab
     # startBlock: 325770 # Pangolin
     mapping:
       file: './dist/index.js'
@@ -61,17 +61,17 @@ network:
   # dictionary: https://api.subquery.network/sq/itering/darwinia-dictionary__aXRlc
 
   # CRAB
-  genesisHash: '0x34f61bfda344b3fad3c3e38832a91448b3c613b199eb23e5110a635d71c13c65'
-  endpoint: wss://crab-rpc.darwinia.network
-  dictionary: https://api.subquery.network/sq/itering/crab-dictionary__aXRlc
+  # genesisHash: '0x34f61bfda344b3fad3c3e38832a91448b3c613b199eb23e5110a635d71c13c65'
+  # endpoint: wss://crab-rpc.darwinia.network
+  # dictionary: https://api.subquery.network/sq/itering/crab-dictionary__aXRlc
 
   # pangolin
-  # genesisHash: '0xce44bd16fc276f9e457b452577b6c2678e57768260012af127479fed806da7e7'
-  # endpoint: wss://pangolin-rpc.darwinia.network/
-  # dictionary: https://api.subquery.network/sq/vzxh/multisig-dictionary__dnp4a
+  genesisHash: '0xce44bd16fc276f9e457b452577b6c2678e57768260012af127479fed806da7e7'
+  endpoint: wss://pangolin-rpc.darwinia.network/
+  dictionary: https://api.subquery.network/sq/vzxh/multisig-dictionary__dnp4a
 
   chaintypes:
-    # file: './types_pangolin.yaml'
+    file: './types_pangolin.yaml'
     # file: './types_darwinia.yaml'
-    file: './types_crab.yaml'
+    # file: './types_crab.yaml'
     # file: ./dist/chaintypes.js

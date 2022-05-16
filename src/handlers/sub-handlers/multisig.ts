@@ -1,6 +1,12 @@
 import { SubstrateEvent } from '@subql/types';
 import { BlockHandler, ExtrinsicHandler } from '..';
-import { ApproveRecord, Extrinsic, MultisigAccount, MultisigRecord } from '../../types';
+import {
+  ApproveRecord,
+  CancelRecord,
+  Extrinsic,
+  MultisigAccount,
+  MultisigRecord,
+} from '../../types';
 
 export class MultisigHandler {
   static async ensureMultisigAccount(
@@ -45,6 +51,21 @@ export class MultisigHandler {
     entity.approveTimepoint = approveTimepoint;
     entity.approveTimestamp = approveTimestamp;
     entity.approveType = approveType;
+    await entity.save();
+  }
+
+  static async saveCancelRecord(
+    accountId: string,
+    multisigAccountId: string,
+    maybeTimepoint: string,
+    cancelTimepoint: string,
+    cancelTimestamp: string
+  ) {
+    const entity = new CancelRecord(`${accountId}-${maybeTimepoint}`);
+    entity.account = accountId;
+    entity.multisigRecordId = `${multisigAccountId}-${maybeTimepoint}`;
+    entity.cancelTimepoint = cancelTimepoint;
+    entity.cancelTimestamp = cancelTimestamp;
     await entity.save();
   }
 
@@ -163,16 +184,27 @@ export class MultisigHandler {
       event: { data },
     } = event;
 
+    const accountId = data[0].toString();
     // Get multisig timepoint.
     const timepoint = data[1].toJSON() as any;
     const multisigAccountId = data[2].toString();
 
     const timepointExtrinsicIdx = `${timepoint.height}-${timepoint.index}`;
+    const currentExtrinsicIdx = `${event.block.block.header.number}-${event.extrinsic.idx}`;
 
     let multisigRecord = await MultisigRecord.get(`${multisigAccountId}-${timepointExtrinsicIdx}`);
     if (!multisigRecord) {
       return;
     }
+
+    // Save cancel record.
+    await this.saveCancelRecord(
+      accountId,
+      multisigAccountId,
+      timepointExtrinsicIdx,
+      currentExtrinsicIdx,
+      event.block.timestamp.valueOf().toString()
+    );
 
     // Update multisig record.
     const blockHeight = event.block.block.header.number;

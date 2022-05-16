@@ -12,3 +12,5 @@ export {MultisigRecord} from "./MultisigRecord"
 
 export {ApproveRecord} from "./ApproveRecord"
 
+export {CancelRecord} from "./CancelRecord"
+
